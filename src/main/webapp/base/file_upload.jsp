@@ -48,7 +48,7 @@
 <body>
 	<div id=pre_view></div>
 	<form id="f_test" method="post" enctype="multipart/form-data"
-		action="<%=request.getContextPath() %>/base/file_upload.do">
+		action="<%=request.getContextPath() %>/base/file_upload">
 		<input type="file" id="eve_img" name="file"><br>
 		<input type="text" name="text"> <input type="submit"
 			value="전송">

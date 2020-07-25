@@ -7,6 +7,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class BaseLogic {
@@ -21,7 +22,7 @@ public class BaseLogic {
 	}
 
 	@Transactional
-	protected Object txCurrent_time(Map<String, Object> pMap) {
+	protected Object txCurrent_time(Map<String, Object> pMap) throws Exception {
 		logger.info("BaseLogic - current_time");
 		int test1 = 0;
 		int test2 = 0;
@@ -32,12 +33,19 @@ public class BaseLogic {
 		return MybatisDao.selectObject(sqlSessionTemplate, "current_time", pMap);
 	}
 
-	protected Object file_upload(Map<String, Object> pMap) throws Exception {
-		logger.info("BaseLogic - file_upload");
-		try {
-		} catch (Exception e) {
-			e.printStackTrace();
+	private static final String UPLOADFOLDER = new java.io.File("src/main/resources/static/uploaded_files/base_files").getAbsolutePath();
+
+	protected Object file_upload(Map<String, Object> pMap, MultipartFile[] files) throws Exception {
+		logger.info("BaseLogic - file_upload, files: " + files.length);
+		logger.info(UPLOADFOLDER);
+		java.io.File saveFile;
+
+		for (MultipartFile f : files) {
+			saveFile = new java.io.File(UPLOADFOLDER, f.getOriginalFilename());
+			f.transferTo(saveFile);
+			pMap.put(f.getName(), f.getOriginalFilename());
+			logger.info(f.getName() + ", " + f.getOriginalFilename());
 		}
-		return "";
+		return "redirect:/base/file_upload.jsp";
 	}
 }
