@@ -16,8 +16,8 @@ public class ResourceConfig implements WebMvcConfigurer {
 	};
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		if(!registry.hasMappingForPattern("/**")) {
-			registry.addResourceHandler("/**").addResourceLocations(CLASSPATH_RESOURCE_LOCATIONS);
+		if(!registry.hasMappingForPattern("/**/**")) {
+			registry.addResourceHandler("/**/**").addResourceLocations(CLASSPATH_RESOURCE_LOCATIONS);
 		}
 	}
 }
