@@ -42,6 +42,7 @@ public class BaseLogic {
 
 		for (MultipartFile f : files) {
 			saveFile = new java.io.File(UPLOADFOLDER, f.getOriginalFilename());
+			int i = 1;
 			f.transferTo(saveFile);
 			pMap.put(f.getName(), f.getOriginalFilename());
 			logger.info(f.getName() + ": " + f.getOriginalFilename() + " - " + f.getSize());
