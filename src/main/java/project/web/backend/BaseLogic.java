@@ -44,7 +44,7 @@ public class BaseLogic {
 			saveFile = new java.io.File(UPLOADFOLDER, f.getOriginalFilename());
 			f.transferTo(saveFile);
 			pMap.put(f.getName(), f.getOriginalFilename());
-			logger.info(f.getName() + ": " + f.getOriginalFilename());
+			logger.info(f.getName() + ": " + f.getOriginalFilename() + " - " + f.getSize());
 		}
 		return "redirect:/base/file_upload.jsp";
 	}

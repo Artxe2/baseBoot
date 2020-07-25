@@ -31,7 +31,7 @@ public class BaseController {
 	}
 
 	@PostMapping("file_upload")
-	public Object file_upload(@RequestParam Map<String, Object> pMap, @RequestPart("file") MultipartFile[] files) {
+	public Object file_upload(@RequestParam Map<String, Object> pMap, @RequestPart("i_file") MultipartFile[] files) {
 		logger.info("BaseController - file_upload");
 		try {
 			return baseLogic.file_upload(pMap, files);
