@@ -97,6 +97,7 @@ public class WsHandler extends TextWebSocketHandler {
 		try {
 			session.sendMessage(new TextMessage(msg.toString()));
 		} catch(Exception e) {
+			e.printStackTrace();
 		}
 	}
 
