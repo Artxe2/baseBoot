@@ -15,7 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Controller
 @RequestMapping("base")
 public class BaseController {
-	org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(BaseController.class);
+	private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(BaseController.class);
 	@Autowired
 	private BaseLogic baseLogic;
 
@@ -24,7 +24,7 @@ public class BaseController {
 	public Object current_time(@RequestParam Map<String, Object> pMap) {
 		logger.info("BaseController - current_time");
 		try {
-			return baseLogic.txCurrent_time(pMap);
+			return baseLogic.current_time(pMap);
 		} catch (Exception e) {
 			return null;
 		}

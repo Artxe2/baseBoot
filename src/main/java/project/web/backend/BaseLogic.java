@@ -11,7 +11,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class BaseLogic {
-	org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(BaseLogic.class);
+	private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(BaseLogic.class);
+	private static final String ROOTPATH = new java.io.File("src/main/resources/static/uploaded_files").getAbsolutePath();
 
 	@Autowired
 	private SqlSessionTemplate sqlSessionTemplate;
@@ -33,19 +34,25 @@ public class BaseLogic {
 		return MybatisDao.selectObject(sqlSessionTemplate, "current_time", pMap);
 	}
 
-	private static final String UPLOADFOLDER = new java.io.File("src/main/resources/static/uploaded_files/base_files").getAbsolutePath();
-
 	protected Object file_upload(Map<String, Object> pMap, MultipartFile[] files) throws Exception {
 		logger.info("BaseLogic - file_upload, files: " + files.length);
-		logger.info(UPLOADFOLDER);
 		java.io.File saveFile;
-
+		String filePath;
+		int j = 0;
 		for (MultipartFile f : files) {
-			saveFile = new java.io.File(UPLOADFOLDER, f.getOriginalFilename());
-			int i = 1;
+			filePath = "base_files/" + f.getOriginalFilename();
+			saveFile = new java.io.File(ROOTPATH, filePath);
+			int i = 0;
+			while (saveFile.exists()) {
+				saveFile = new java.io.File(ROOTPATH, filePath.substring(0, filePath.lastIndexOf('.')) + ++i + '.' + filePath.substring(filePath.lastIndexOf('.') + 1));
+			}
+			if (i > 0) {
+				filePath = filePath.substring(0, filePath.lastIndexOf('.')) + ++i + '.' + filePath.substring(filePath.lastIndexOf('.') + 1);
+			}
 			f.transferTo(saveFile);
-			pMap.put(f.getName(), f.getOriginalFilename());
-			logger.info(f.getName() + ": " + f.getOriginalFilename() + " - " + f.getSize());
+			String name = f.getName() + j++;
+			pMap.put(name, filePath);
+			logger.info(name + ": " + filePath + " - " + f.getSize());
 		}
 		return "redirect:/base/file_upload.jsp";
 	}

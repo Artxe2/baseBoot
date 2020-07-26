@@ -23,8 +23,8 @@ import com.zaxxer.hikari.HikariDataSource;
 @EnableTransactionManagement
 @EnableConfigurationProperties
 @PropertySource("classpath:/application.properties")
-public class HikariSessionConfig {
-	private org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(HikariSessionConfig.class);
+public class HikariCPConfig {
+	private org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(HikariCPConfig.class);
 	@Autowired
 	private ApplicationContext applicationContext;
 	@Autowired
