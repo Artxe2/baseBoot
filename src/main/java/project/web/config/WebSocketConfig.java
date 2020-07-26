@@ -13,6 +13,7 @@ import project.web.socket.WsHandler;
 public class WebSocketConfig implements WebSocketConfigurer {
 	@Autowired
 	private WsHandler wsHandler;
+
 	@Override
 	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
 		registry.addHandler(wsHandler, "/ws");
