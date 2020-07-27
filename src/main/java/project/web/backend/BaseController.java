@@ -40,4 +40,10 @@ public class BaseController {
 			return null;
 		}
 	}
+
+	@GetMapping("file_download")
+	public Object file_download() {
+		logger.info("BaseController - file_upload");
+		return "base/file_download";
+	}
 }
