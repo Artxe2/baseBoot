@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.mybatis.sql">
+
+	<select id="core_chart" parameterType="map" resultType="map">
+		SELECT
+			'row'||rownum rowname,
+			(rownum - mod(rownum, 2) * 1.5 + 10) * 1 column1,
+			(rownum - mod(rownum, 2) * 1.5 + 10) * 2 column2,
+			(rownum - mod(rownum, 2) * 1.5 + 10) * 3 column3,
+			(rownum - mod(rownum, 2) * 1.5 + 10) * 4 column4,
+			(rownum - mod(rownum, 2) * 1.5 + 10) * 5 column5
+		FROM dual
+		CONNECT BY level &lt; 10
+	</select>
+	<select id="org_chart" parameterType="map" resultType="map">
+		SELECT
+			ename,
+			job,
+			nvl((select ename from emp where empno = e.mgr), '') mgr
+		FROM emp e
+	</select>
+</mapper>

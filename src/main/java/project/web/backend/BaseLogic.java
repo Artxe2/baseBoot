@@ -1,5 +1,6 @@
 package project.web.backend;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.mybatis.MybatisDao;
@@ -55,5 +56,15 @@ public class BaseLogic {
 			logger.info(name + ": " + filePath + " - " + f.getSize());
 		}
 		return "redirect:/base/file_upload.jsp";
+	}
+
+	protected List<Map<String, Object>> core_chart() throws Exception {
+		logger.info("BaseLogic - core_chart");
+		return MybatisDao.selectList(sqlSessionTemplate, "core_chart", null);
+	}
+
+	protected List<Map<String, Object>> org_chart() throws Exception {
+		logger.info("BaseLogic - org_chart");
+		return MybatisDao.selectList(sqlSessionTemplate, "org_chart", null);
 	}
 }

@@ -1,0 +1,13 @@
+{
+	"cols":[
+			{"type":"string"},{"type":"number"}
+	],
+	"rows":[
+			{"c":[{"v":"Germany"},{"v":200}]},
+			{"c":[{"v":"United States"},{"v":300}]},
+			{"c":[{"v":"Brazil"},{"v":400}]},
+			{"c":[{"v":"Canada"},{"v":500}]},
+			{"c":[{"v":"France"},{"v":600}]},
+			{"c":[{"v":"RU"},{"v":700}]}
+    ]
+}

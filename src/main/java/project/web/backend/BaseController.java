@@ -2,6 +2,7 @@ package project.web.backend;
 
 import java.util.Map;
 
+import org.apache.mybatis.GoogleChart;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +27,7 @@ public class BaseController {
 		try {
 			return baseLogic.current_time(pMap);
 		} catch (Exception e) {
+			e.printStackTrace();
 			return null;
 		}
 	}
@@ -45,5 +47,31 @@ public class BaseController {
 	public Object file_download() {
 		logger.info("BaseController - file_upload");
 		return "base/file_download";
+	}
+
+	@ResponseBody
+	@GetMapping("core_chart")
+	public Object core_chart() {
+		logger.info("BaseController - core_chart");
+		try {
+			return GoogleChart.toChartDataTable("ROWNAME", baseLogic.core_chart(), null, null);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	@ResponseBody
+	@GetMapping("org_chart")
+	public Object org_chart() {
+		logger.info("BaseController - org_chart");
+		try {
+			return GoogleChart.toChartDataTable("ENAME", baseLogic.org_chart(), new String[] {"MGR", "JOB"},
+					//		null);
+					new String[] {"<div style=\"color:red; font-style:italic\">", "#JOB", "</div>", "#ENAME"});
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 }
