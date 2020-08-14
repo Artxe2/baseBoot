@@ -18,12 +18,11 @@ geo chart --%>
 		google.charts.setOnLoadCallback(drawGeo);
 		function drawGeo() {
 			ajax({
-				url: '/base_files/geoChartData',
+				url: '/base/geo_chart',
 				success: (data) => {
 					new google.visualization.GeoChart(document.querySelector('#geo_chart')).draw(
 							new google.visualization.DataTable(data)
 							,{
-								title: 'GeoChart'
 							}
 					);
 				}
@@ -36,12 +35,15 @@ core charts --%>
 		google.charts.setOnLoadCallback(drawChart);
 		function drawChart() {
 			ajax({
-				url: '/base/core_chart',
+				url: '/base/scatter_chart',
 				success: (data) => {
 					new google.visualization.ScatterChart(document.querySelector('#scatter_chart')).draw(
 							new google.visualization.DataTable(data)
 							,{
-								title: 'ScatterChart'
+								title: 'ScatterChart',
+								hAxis: {title: 'rows', minValue: 0, maxValue: 15},
+								vAxis: {title: 'columns', minValue: 0, maxValue: 150},
+								legend: 'none'
 							}
 					);
 				}
@@ -144,14 +146,14 @@ core charts --%>
 				}
 			});
 			ajax({
-				url: '/base/core_chart',
+				url: '/base/core_chart2',
 				success: (data) => {
 					new google.visualization.BubbleChart(document.querySelector('#bubble_chart')).draw(
 							new google.visualization.DataTable(data)
 							,{
 								title: 'BubbleChart',
-								hAxis: {title: 'column5'},
-								vAxis: {title: 'column4'},
+								hAxis: {title: 'column1'},
+								vAxis: {title: 'column2'},
 								bubble: {textStyle: {fontSize: 11}}
 							}
 					);
@@ -169,6 +171,18 @@ core charts --%>
 					);
 				}
 			});
+			ajax({
+				url: '/base/core_chart2',
+				success: (data) => {
+					new google.visualization.CandlestickChart(document.querySelector('#candlestick_chart')).draw(
+							new google.visualization.DataTable(data)
+							,{
+								title: 'CandlestickChart',
+								legend:'none'
+							}
+					);
+				}
+			});
 		}
 <%-- core charts
 
@@ -181,11 +195,9 @@ org chart --%>
 			ajax({
 				url: '/base/org_chart',
 				success: (data) => {
-					document.querySelector('#test').innerHTML = data;
 					new google.visualization.OrgChart(document.querySelector('#org_chart')).draw(
 							new google.visualization.DataTable(data)
 							,{
-								title: 'OrgChart',
 								'allowHtml': true
 							}
 					);
@@ -194,12 +206,104 @@ org chart --%>
 		}
 <%-- org chart
 
+tree map --%>
+		google.charts.load('current', {
+			'packages':['treemap']
+		});
+		google.charts.setOnLoadCallback(drawTree);
+		function drawTree() {
+			ajax({
+				url: '/base/tree_map',
+				success: (data) => {
+					new google.visualization.TreeMap(document.querySelector('#tree_map')).draw(
+							new google.visualization.DataTable(data)
+							,{
+								title: 'TreeMap',
+								minColor: '#f00',
+								midColor: '#ddd',
+								maxColor: '#0d0',
+								headerHeight: 15,
+								fontColor: 'black',
+								showScale: true
+							}
+					);
+				}
+			});
+		}
+<%-- tree map
+
+table --%>
+		google.charts.load('current', {
+			'packages':['table']
+		});
+		google.charts.setOnLoadCallback(drawTable);
+		function drawTable() {
+			ajax({
+				url: '/base/table',
+				success: (data) => {
+					new google.visualization.Table(document.querySelector('#table')).draw(
+							new google.visualization.DataTable(data)
+							,{
+								showRowNumber: true
+							}
+					);
+				}
+			});
+		}
+<%-- table
+
+timeline --%>
+		google.charts.load('current', {
+			'packages':['timeline']
+		});
+		google.charts.setOnLoadCallback(drawTime);
+		function drawTime() {
+			ajax({
+				url: '/base/timeline',
+				success: (data) => {
+					data = JSON.parse(data);
+					for (i in data.rows) {
+						data.rows[i].c[1].v = new Date(data.rows[i].c[1].v);
+						data.rows[i].c[2].v = new Date(data.rows[i].c[2].v);
+					}
+					new google.visualization.Timeline(document.querySelector('#timeline')).draw(
+							new google.visualization.DataTable(data)
+							,{
+								title: 'Timeline'
+							}
+					);
+				}
+			});
+		}
+<%-- timeline
+
+gauge --%>
+		google.charts.load('current', {
+			'packages':['gauge']
+		});
+		google.charts.setOnLoadCallback(drawGauge);
+		function drawGauge() {
+			ajax({
+				url: '/base/core_chart',
+				success: (data) => {
+					new google.visualization.Gauge(document.querySelector('#gauge')).draw(
+							new google.visualization.DataTable(data)
+							,{
+								title: 'Gauge',
+								redFrom: 90, redTo: 100,
+						        yellowFrom: 75, yellowTo: 90,
+						        minorTicks: 5
+							}
+					);
+				}
+			});
+		}
+<%-- gauge
+
 --%>
 	</script>
 </head>
-<body>
-	<div><pre id="test"></pre></div>
-	
+<body>	
     <div id="geo_chart" style="width: 600px; height: 400px; float: left;"></div>
     <div id="scatter_chart" style="width: 600px; height: 400px; float: left;"></div>
     <div id="column_chart" style="width: 600px; height: 400px; float: left;"></div>
@@ -216,6 +320,12 @@ org chart --%>
     <div id="bubble_chart" style="width: 600px; height: 400px; float: left;"></div>
     <div id="donut_chart" style="width: 600px; height: 400px; float: left;"></div>
 
-    <div id="org_chart" style="width: 600px; height: 400px; float: left;"></div>
+    <div id="org_chart" style="width: 900px; height: 400px; float: left;"></div>
+    <div id="tree_map" style="width: 600px; height: 400px; float: left;"></div>
+    <div id="table" style="width: 300px; height: 400px; float: left;"></div>
+    
+    <div id="timeline" style="width: 600px; height: 400px; float: left;"></div>
+    <div id="gauge" style="width: 600px; height: 400px; float: left;"></div>
+    <div id="candlestick_chart" style="width: 600px; height: 400px; float: left;"></div>
 </body>
 </html>
