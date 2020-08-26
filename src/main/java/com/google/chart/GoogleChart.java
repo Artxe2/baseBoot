@@ -54,8 +54,8 @@ public final class GoogleChart {
 				cols.add(col);
 			}
 		}
-		List<Map<String, List<Map<String, Object>>>> rows = new ArrayList<>();
 
+		List<Map<String, List<Map<String, Object>>>> rows = new ArrayList<>();
 		data.put("rows", rows);
 		Map<String, List<Map<String, Object>>> row;
 		List<Map<String, Object>> cells;
@@ -63,8 +63,9 @@ public final class GoogleChart {
 			row = new HashMap<>();
 			cells = new ArrayList<Map<String, Object>>();
 			row.put("c", cells);
-			Map<String, Object> cell = new HashMap<>();
+			Map<String, Object> cell;
 			if (rowName != null) {
+				cell = new HashMap<>();
 				cell.put("v", map.get(rowName));
 				if (cf != null && cf.type == ChartFormat.ORG_CHART) {
 					sb.setLength(0);
@@ -82,11 +83,11 @@ public final class GoogleChart {
 			}
 			F: for (Map.Entry<String, Object> e : map.entrySet()) {
 				if (rowName == null || !rowName.equals(e.getKey())) {
+					cell = new HashMap<>();
 					if (cf != null && cf.type == ChartFormat.TABLE && ("F_" + cf.format).equals(e.getKey())) {
 						cell.put("f", e.getValue());
 						continue F;
 					}
-					cell = new HashMap<>();
 					cell.put("v", e.getValue());
 					cells.add(cell);
 				}
@@ -97,5 +98,50 @@ public final class GoogleChart {
 				.replaceAll("\"null\"", "null")
 				.replaceAll("\"true\"", "true")
 				.replaceAll("\"false\"", "false");
+	}
+
+	public static String toSimpleTable(String rowName, List<Map<String, Object>> list) {
+		Map<String, Object> data = new HashMap<>();
+
+		List<Map<String, Object>> cols = new ArrayList<>();
+		data.put("cols", cols);
+		Map<String, Object> col;
+		if (rowName != null) {
+			col = new HashMap<>();
+			col.put("type", "string");
+			cols.add(col);
+		}
+		for (Map.Entry<String, Object> e : list.get(0).entrySet()) {
+			if (rowName == null || !rowName.equals(e.getKey())) {
+				col = new HashMap<>();
+				col.put("label", e.getKey());
+				cols.add(col);
+			}
+		}
+
+		List<Map<String, List<Map<String, Object>>>> rows = new ArrayList<>();
+		data.put("rows", rows);
+		Map<String, List<Map<String, Object>>> row;
+		List<Map<String, Object>> cells;
+		for (Map<String, Object> map : list) {
+			row = new HashMap<>();
+			cells = new ArrayList<Map<String, Object>>();
+			row.put("c", cells);
+			Map<String, Object> cell;
+			if (rowName != null) {
+				cell = new HashMap<>();
+				cell.put("v", map.get(rowName));
+				cells.add(cell);
+			}
+			for (Map.Entry<String, Object> e : map.entrySet()) {
+				if (rowName == null || !rowName.equals(e.getKey())) {
+					cell = new HashMap<>();
+					cell.put("v", e.getValue());
+					cells.add(cell);
+				}
+			}
+			rows.add(row);
+		}
+		return gson.toJson(data);
 	}
 }
