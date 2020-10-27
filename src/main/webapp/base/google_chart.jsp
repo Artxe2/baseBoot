@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>GoogleChart Sample</title>
 	<script src="/js/ajax.js"></script>
 	<script src="https://www.gstatic.com/charts/loader.js"></script>
 	<script type="text/javascript">
