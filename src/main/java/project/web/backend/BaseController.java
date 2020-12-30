@@ -2,7 +2,6 @@ package project.web.backend;
 
 import java.util.Map;
 
-import org.apache.mybatis.GoogleChart;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,54 +20,22 @@ public class BaseController {
 	private BaseLogic baseLogic;
 
 	@ResponseBody
-	@GetMapping("current_time")
-	public Object current_time(@RequestParam Map<String, Object> pMap) {
-		logger.info("BaseController - current_time");
+	@GetMapping("currentTime")
+	public Object currentTime(@RequestParam Map<String, Object> pMap) {
+		logger.info("BaseController - currentTime");
 		try {
-			return baseLogic.current_time(pMap);
+			return baseLogic.currentTime(pMap);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		}
 	}
 
-	@PostMapping("file_upload")
-	public Object file_upload(@RequestParam Map<String, Object> pMap, @RequestPart("i_file") MultipartFile[] files) {
-		logger.info("BaseController - file_upload");
+	@PostMapping("uploadFiles")
+	public Object uploadFiles(@RequestParam Map<String, Object> pMap, @RequestPart("i_file") MultipartFile[] files) {
+		logger.info("BaseController - uploadFiles");
 		try {
-			return baseLogic.file_upload(pMap, files);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-
-	@GetMapping("file_download")
-	public Object file_download() {
-		logger.info("BaseController - file_upload");
-		return "base/file_download";
-	}
-
-	@ResponseBody
-	@GetMapping("core_chart")
-	public Object core_chart() {
-		logger.info("BaseController - core_chart");
-		try {
-			return GoogleChart.toChartDataTable("ROWNAME", baseLogic.core_chart(), null, null);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-
-	@ResponseBody
-	@GetMapping("org_chart")
-	public Object org_chart() {
-		logger.info("BaseController - org_chart");
-		try {
-			return GoogleChart.toChartDataTable("ENAME", baseLogic.org_chart(), new String[] {"MGR", "JOB"},
-					//		null);
-					new String[] {"<div style=\"color:red; font-style:italic\">", "#JOB", "</div>", "#ENAME"});
+			return baseLogic.uploadFiles(pMap, files);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
