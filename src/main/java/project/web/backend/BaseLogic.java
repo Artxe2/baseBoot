@@ -25,7 +25,7 @@ public class BaseLogic {
 	public Object currentTime(Map<String, Object> pMap) {
 		logger.info("BaseLogic - currentTime");
 		Object mybatis = MybatisDao.selectObject(sqlSessionTemplate, "currentTime", pMap);
-		Object jpa = dualRepository.currentTime().get(0);
+		Object jpa = dualRepository.currentTime().get(0).getCurrentTime();
 		return mybatis + "<br/>" + jpa;
 	}
 
